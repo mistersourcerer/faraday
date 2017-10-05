@@ -53,6 +53,8 @@ module Faraday
     end
   end
 
+  class Faraday::Error::OpenTimeoutError < TimeoutError; end
+
   class SSLError < ClientError
   end
 
