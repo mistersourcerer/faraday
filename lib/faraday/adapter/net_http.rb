@@ -37,7 +37,9 @@ module Faraday
           begin
             http_response = perform_request(http, env)
           rescue *NET_HTTP_EXCEPTIONS => err
-            if defined?(OpenSSL) && OpenSSL::SSL::SSLError === err
+            if defined?(Net::OpenTimeout) && err.is_a?(Net::OpenTimeout)
+              raise Faraday::Error::OpenTimeoutError, err
+            elsif defined?(OpenSSL) && OpenSSL::SSL::SSLError === err
               raise Faraday::SSLError, err
             else
               raise Error::ConnectionFailed, err
